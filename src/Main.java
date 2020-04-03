@@ -8,6 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         dots();
+//        digits();
     }
 
     private static void dots() {
@@ -23,7 +24,7 @@ public class Main {
         int samples = 60000;
         BufferedImage[] images = new BufferedImage[samples];
         int[] digits = new int[samples];
-        File[] imagesFiles = new File("C:/train").listFiles();
+        File[] imagesFiles = new File("./train").listFiles();
         for (int i = 0; i < samples; i++) {
             images[i] = ImageIO.read(imagesFiles[i]);
             digits[i] = Integer.parseInt(imagesFiles[i].getName().charAt(10) + "");
@@ -38,10 +39,12 @@ public class Main {
             }
         }
 
-        for (int i = 0; i < 1000; i++) {
+        int epochs = 1000;
+        for (int i = 1; i < epochs; i++) {
             int right = 0;
             double errorSum = 0;
-            for (int j = 0; j < 100; j++) {
+            int batchSize = 100;
+            for (int j = 0; j < batchSize; j++) {
                 int imgIndex = (int)(Math.random() * samples);
                 double[] targets = new double[10];
                 int digit = digits[imgIndex];
@@ -62,7 +65,7 @@ public class Main {
                 }
                 nn.backpropagation(targets);
             }
-            System.out.println(right + " " + errorSum);
+            System.out.println("epoch: " + i + ". correct: " + right + ". error: " + errorSum);
         }
 
         FormDigits f = new FormDigits(nn);
